@@ -2,7 +2,7 @@
 
 import Footer from '@/components/footer'
 import GuideLines from '@/components/guideLines'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/navbar'
 import TarotCardSpread from '@/components/tarotCardSpread'
 import React from 'react'
 
