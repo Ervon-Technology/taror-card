@@ -1,4 +1,4 @@
-// File: app/tarotCards.js
+// src/app/tarotCards.js
 // This is a shared file containing all tarot card data for reuse in components
 
 export const tarotCards = [

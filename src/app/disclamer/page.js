@@ -1,3 +1,5 @@
+// src/app/disclamer/page.js
+
 import React from 'react';
 
 export default function DisclaimerPage() {

@@ -1,3 +1,5 @@
+// src/app/reading/page.js
+
 import Footer from '@/components/footer'
 import GuideLines from '@/components/guideLines'
 import Navbar from '@/components/Navbar'
