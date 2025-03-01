@@ -7,21 +7,22 @@ function Footer() {
         <footer className="bg-[#484848] text-white py-6">
             <div className="container mx-auto px-4">
                 {/* Main Footer Content */}
-                <div className="flex flex-col md:flex-row items-center justify-between mb-6">
+                <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left space-y-4 md:space-y-0">
                     {/* Left Section */}
-                    <div className="text-center md:text-left mb-4 md:mb-0">
-                        <h2 className="text-lg font-semibold">Mystic Tarot Insights 0(17times).com</h2>
+                    <div>
+                        <h2 className="text-lg font-semibold">Mystic Tarot Insights</h2>
                         <p className="text-sm text-gray-400">© {new Date().getFullYear()} All Rights Reserved.</p>
                     </div>
 
-                    <p className="mt-2 text-xs">
+                    {/* Disclaimer Link */}
+                    <div>
                         <Link href="/disclamer" className="text-gray-300 hover:text-white underline">
-                         Disclaimer
+                            Disclaimer
                         </Link>
-                    </p>
+                    </div>
 
                     {/* Social Media */}
-                    <div className="flex items-center space-x-4">
+                    <div className="flex justify-center md:justify-end">
                         <a 
                             href="https://www.instagram.com/universehiddentarot?igsh=bHhsNWljbDU4NGpt&utm_source=website" 
                             target="_blank" 

@@ -154,17 +154,17 @@ export default function ReadingPage() {
             <Navbar />
             <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
                 <div className="animate-pulse">
-                    <div className="w-24 h-24 bg-purple-600/50 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <svg className="w-12 h-12 text-purple-300" fill="currentColor" viewBox="0 0 24 24">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-purple-600/50 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <svg className="w-10 h-10 sm:w-12 sm:h-12 text-purple-300" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                             <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
                     </div>
                 </div>
-                <h2 className="text-2xl font-bold text-purple-200 mb-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-purple-200 mb-4">
                     Unveiling Your Mystical Reading
                 </h2>
-                <p className="text-gray-300 max-w-md">
+                <p className="text-sm sm:text-base text-gray-300 max-w-md">
                     The cosmic energies are aligning to reveal your personalized tarot insights...
                 </p>
             </div>
@@ -176,20 +176,20 @@ export default function ReadingPage() {
         <div className="min-h-screen bg-gradient-to-br from-purple-900 to-gray-900 text-white">
             <Navbar />
             <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
-                <div className="w-24 h-24 bg-red-600/30 rounded-full flex items-center justify-center mb-6">
-                    <Info className="w-12 h-12 text-red-400" />
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-red-600/30 rounded-full flex items-center justify-center mb-6">
+                    <Info className="w-10 h-10 sm:w-12 sm:h-12 text-red-400" />
                 </div>
-                <h1 className="text-3xl font-extrabold text-red-300 mb-4">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-red-300 mb-4">
                     Reading Disrupted
                 </h1>
-                <p className="text-gray-200 max-w-md mb-8">
+                <p className="text-sm sm:text-base text-gray-200 max-w-md mb-6 sm:mb-8">
                     {error || "The mystical connection has been interrupted. Please return to the sanctuary and try again."}
                 </p>
                 <button
                     onClick={() => router.push('/')}
-                    className="px-6 py-3 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-2 shadow-lg"
+                    className="px-5 py-2.5 sm:px-6 sm:py-3 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-2 shadow-lg"
                 >
-                    <Home className="w-5 h-5" />
+                    <Home className="w-4 h-4 sm:w-5 sm:h-5" />
                     Return to Sanctuary
                 </button>
             </div>
@@ -199,69 +199,69 @@ export default function ReadingPage() {
 
     // Main Reading Content Component
     const ReadingContent = () => (
-        <div className="min-h-screen bg-gradient-to-br text-white">
+        <div className="min-h-screen text-white">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-8 max-w-6xl">
+            <div className="container mx-auto px-4 py-6 sm:py-8 max-w-6xl">
                 {/* Header */}
-                <header className="mb-12">
+                <header className="mb-8 sm:mb-12">
                     <button 
                         onClick={() => router.push('/reading')}
-                        className="text-purple-300 hover:text-purple-100 flex items-center gap-2 mb-6 transition-colors"
+                        className="text-purple-300 hover:text-purple-100 flex items-center gap-1.5 sm:gap-2 mb-4 sm:mb-6 transition-colors text-sm sm:text-base"
                     >
-                        <ArrowLeft className="w-5 h-5" />
+                        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
                         Back to Card Selection
                     </button>
                     
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                         <div>
-                            <h1 className="text-4xl font-extrabold text-purple-200 mb-2 chokokutai-regular">
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-purple-200 mb-1 sm:mb-2 chokokutai-regular">
                                 Your Mystical Journey
                             </h1>
-                            <p className="text-gray-300 text-lg">
+                            <p className="text-gray-300 text-sm sm:text-base md:text-lg">
                                 A personalized tarot insight awaits
                             </p>
                         </div>
 
                         <button
                             onClick={shareReading}
-                            className="px-5 py-2.5 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-2 shadow-md"
+                            className="px-4 py-2 sm:px-5 sm:py-2.5 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-1.5 sm:gap-2 shadow-md text-sm sm:text-base"
                         >
-                            <Share2 className="w-5 h-5" />
+                            <Share2 className="w-4 h-4 sm:w-5 sm:h-5" />
                             Share Reading
                         </button>
                     </div>
                     
                     {shareMessage && (
-                        <div className="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+                        <div className="fixed top-4 right-4 bg-green-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg shadow-lg z-50 text-sm sm:text-base">
                             {shareMessage}
                         </div>
                     )}
                 </header>
 
                 {/* Cards Reading */}
-                <div className="space-y-8">
+                <div className="space-y-6 sm:space-y-8">
                     {readingCards.map((card, idx) => (
                         <div 
                             key={idx} 
-                            className="bg-[#484848] rounded-xl overflow-hidden shadow-xl border border-purple-800/50 hover:bg-[#484848]/80 transition-all"
+                            className="bg-[#484848] rounded-lg sm:rounded-xl overflow-hidden shadow-xl border border-purple-800/50 hover:bg-[#484848]/80 transition-all"
                         >
-                            <div className="md:flex p-6 gap-8 items-center">
-                                <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                            <div className="flex flex-col md:flex-row p-4 sm:p-6 gap-4 md:gap-6 lg:gap-8 items-center">
+                                <div className="w-full md:w-1/3 flex justify-center mb-4 md:mb-0">
                                     <img 
                                         src={card.image} 
                                         alt={card.name}
-                                        className="w-[15rem] h-96 object-contain rounded-xl shadow-2xl"
+                                        className="w-40 sm:w-48 md:w-56 lg:w-64 h-64 sm:h-72 md:h-80 lg:h-96 object-contain rounded-lg sm:rounded-xl shadow-lg sm:shadow-2xl"
                                     />
                                 </div>
-                                <div className="md:w-2/3">
-                                    <h3 className="text-xl font-bold text-purple-300 mb-2 ">
+                                <div className="w-full md:w-2/3">
+                                    <h3 className="text-base sm:text-lg md:text-xl font-bold text-purple-300 mb-1 sm:mb-2">
                                         Card {idx + 1}: {card.position}
                                     </h3>
-                                    <h4 className="text-2xl font-extrabold text-white mb-4">
-                                        {card.name}
+                                    <h4 className="text-xl sm:text-2xl font-extrabold text-white mb-2 sm:mb-4">
+                                        {card.name} {card.isReversed && "(Reversed)"}
                                     </h4>
-                                    <p className={`text-lg leading-relaxed ${card.isReversed ? 'text-purple-200 italic' : 'text-gray-200'}`}>
+                                    <p className={`text-sm sm:text-base md:text-lg leading-relaxed ${card.isReversed ? 'text-purple-200 italic' : 'text-gray-200'}`}>
                                         {card.isReversed ? card.reversedMeaning : card.meaning}
                                     </p>
                                 </div>

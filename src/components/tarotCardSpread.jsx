@@ -395,51 +395,34 @@ const TarotCardSpread = () => {
                                 scale(${state.scale})
                             `;
 
-                                return (
-                                    <div
-                                        key={card.name}
-                                        className={`
-                                        border-4 rounded-lg transition-all duration-500 ease-out cursor-pointer 
+                            return (
+                                <div
+                                    key={card.name}
+                                    className={`
+                                        border-4 rounded-lg transition-all duration-500 ease-out cursor-pointer
                                         ${isSelected ? 'border-yellow-400' : 'border-gray-700'}
+                                        fixed overflow-hidden flex items-center justify-center
                                     `}
-                                        style={{
-                                            width: `${cardWidth}px`,
-                                            height: `${cardHeight}px`,
-                                            transform: cardTransform,
-                                            zIndex: state.zIndex,
-                                            position: 'fixed',
-                                            transformOrigin: 'center center',
-                                            transition: isShuffling ? 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' : 'all 0.5s ease-out',
-                                            overflow: 'hidden'
-                                        }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            toggleSelectCard(card, index);
-                                        }}
-                                    >
-                                        {isRevealed ? (
-                                            // Revealed card shows the actual tarot card
-                                            <div
-                                                className="w-full h-full flex items-center justify-center"
-                                                style={{
-                                                    background: 'url(/bk.webp) no-repeat',
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: '0'
-                                                }}
-                                            ></div>
-                                        ) : (
-                                            // Card back design with the provided background image
-                                            <div
-                                                className="w-full h-full flex items-center justify-center"
-                                                style={{
-                                                    background: 'url(/bk.webp) no-repeat',
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: '0'
-                                                }}
-                                            ></div>
-                                        )}
-                                    </div>
-                                );
+                                    style={{
+                                        width: `${cardWidth}px`,
+                                        height: `${cardHeight}px`,
+                                        transform: cardTransform,
+                                        zIndex: state.zIndex,
+                                        transformOrigin: 'center',
+                                        transition: isShuffling
+                                            ? 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                                            : 'all 0.5s ease-out',
+                                        willChange: 'transform',
+                                    }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleSelectCard(card, index);
+                                    }}
+                                >
+                                    <div className="w-full h-full bg-cover bg-no-repeat" style={{ backgroundImage: "url('/bk.webp')" }}></div>
+                                </div>
+                            );
+                            
                             })}
                         </div>
                     </div>
