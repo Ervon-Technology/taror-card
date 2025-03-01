@@ -380,7 +380,9 @@ const TarotCardSpread = () => {
                         )}
 
                         {/* Cards using CSS transforms instead of absolute positioning */}
-                        <div className="relative w-full h-full flex justify-center md:justify-start items-center">
+                        <div className={`relative w-full h-full flex  md:justify-start items-center ${
+    spread ? "" : "justify-center"
+  }`}>
                             {cards.map((card, index) => {
                                 const isSelected = selectedCards.includes(card);
                                 const state = cardStates[index];
@@ -482,7 +484,7 @@ const TarotCardSpread = () => {
 
                     {selectedCards.length === 6 && (
                         <button
-                            className="px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg transition flex items-center gap-2"
+                            className="px-4 py-2 bg-[#484848] hover:bg-[#302f2f] rounded-lg transition flex items-center gap-2"
                             onClick={goToReading}
                         >
                             <BookOpen size={18} />

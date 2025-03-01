@@ -7,10 +7,13 @@ import Navbar from '@/components/navbar'
 import TarotCardSpread from '@/components/tarotCardSpread'
 import React from 'react'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { useRouter } from 'next/navigation';
+
+
 
 export default function HomePage() {
   const [entered, setEntered] = useState(false)
-
+  const router = useRouter();
   // Mouse position for parallax effect
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -27,9 +30,9 @@ export default function HomePage() {
 
   return (
     <div>
-      {!entered ? (
+     
         <div
-          className="relative h-screen w-full flex items-center justify-center overflow-hidden text-white"
+          className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden text-white"
           onMouseMove={handleMouseMove}
         >
           {/* Background Video */}
@@ -44,7 +47,7 @@ export default function HomePage() {
 
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-
+          <div className='z-10 text-6xl font-bold chokokutai-regular text-center'>Welcome to Universe Hidden Tarot </div>
           {/* Interactive Tarot Card & Message */}
           <div className="relative z-10 flex flex-col items-center text-center  p-8">
             {/* Tarot Card with Parallax Effect */}
@@ -59,7 +62,7 @@ export default function HomePage() {
 
             {/* Enter Button with Hover Effect */}
             <motion.button
-              onClick={() => setEntered(true)}
+              onClick={() => router.push('/reading')}
               className="mt-6 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white text-lg font-semibold rounded-lg shadow-lg transition"
               whileHover={{ scale: 1.1, y: -5 }}
               whileTap={{ scale: 0.9 }}
@@ -71,22 +74,7 @@ export default function HomePage() {
             </motion.button>
           </div>
         </div>
-      ) : (
-        <>
-          <Navbar />
-          <div className='py-14'>
-            <div className='text-center'>
-              <h1 className='text-4xl font-bold chokokutai-regular'>Unlock the Secrets of the Tarot</h1>
-              <p className='text-lg text-gray-200 mt-2'>
-                Get a free tarot card reading and gain insights into your past, present, and future.
-              </p>
-            </div>
-          </div>
-          <TarotCardSpread />
-          <GuideLines />
-          <Footer />
-        </>
-      )}
+    
     </div>
   )
 }

@@ -4,11 +4,12 @@ import { useParams } from 'next/navigation';
 import { tarotCards } from '@/app/tarotCards';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Share2, Home, Download, ChevronDown, ChevronUp, ArrowLeft } from 'lucide-react';
+import { Share2, Home, Info, ArrowLeft } from 'lucide-react';
 import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
 
 export default function ReadingPage() {
+    
     const params = useParams();
     const router = useRouter();
     const readingCode = params?.number || '';
@@ -17,8 +18,7 @@ export default function ReadingPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [shareMessage, setShareMessage] = useState('');
-    const [expandedCards, setExpandedCards] = useState({});
-    
+
     // Card positions and meanings
     const cardPositions = [
         "How you feel about yourself now",
@@ -30,6 +30,14 @@ export default function ReadingPage() {
     ];
 
     useEffect(() => {
+        // Set a timeout to prevent indefinite loading
+        const loadingTimeout = setTimeout(() => {
+            if (loading) {
+                setError("Loading took too long. Please try again.");
+                setLoading(false);
+            }
+        }, 10000); // 10 seconds timeout
+
         // Parse the reading code to extract card information
         const parseReadingCode = (code) => {
             try {
@@ -72,47 +80,54 @@ export default function ReadingPage() {
         };
 
         // Try to parse the reading code from the URL
-        if (readingCode) {
-            const cards = parseReadingCode(readingCode);
-            console.log("Parsed Cards:", cards); // Debug log
-            setReadingCards(cards);
-            
-            // Initialize all cards as collapsed
-            const initialExpandState = {};
-            cards.forEach((_, idx) => {
-                initialExpandState[idx] = false;
-            });
-            setExpandedCards(initialExpandState);
-            
-            setLoading(false);
-        }
+        const loadReading = async () => {
+            if (readingCode) {
+                try {
+                    const cards = parseReadingCode(readingCode);
+                    
+                    // Simulate a minimum loading time to show loading screen
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    console.log("Parsed Cards:", cards); // Debug log
+                    setReadingCards(cards);
+                    
+                    setLoading(false);
+                    clearTimeout(loadingTimeout);
+                } catch (err) {
+                    console.error("Error in loading reading:", err);
+                    setError("An unexpected error occurred while loading your reading.");
+                    setLoading(false);
+                    clearTimeout(loadingTimeout);
+                }
+            }
+        };
+
+        loadReading();
+
+        // Cleanup function
+        return () => {
+            clearTimeout(loadingTimeout);
+        };
     }, [readingCode]);
 
-    // Toggle card expanded state
-    const toggleCardExpanded = (idx) => {
-        setExpandedCards(prev => ({
-            ...prev,
-            [idx]: !prev[idx]
-        }));
-    };
-
     // Share the reading via navigator share API or copy link
-    const shareReading = async () => {
+    const shareReading = () => {
         const url = window.location.href;
 
         if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'My Tarot Reading',
-                    text: `Check out my Mystic Tarot Reading with ${readingCards.length} cards!`,
-                    url: url
-                });
+            navigator.share({
+                title: 'My Tarot Reading',
+                text: `Check out my Mystic Tarot Reading with ${readingCards.length} cards!`,
+                url: url
+            })
+            .then(() => {
                 setShareMessage('Shared successfully!');
                 setTimeout(() => setShareMessage(''), 3000);
-            } catch (error) {
+            })
+            .catch((error) => {
                 console.error('Error sharing:', error);
                 copyLinkToClipboard();
-            }
+            });
         } else {
             copyLinkToClipboard();
         }
@@ -133,256 +148,135 @@ export default function ReadingPage() {
             });
     };
 
-    // Generate a PDF or image of the reading (basic implementation)
-    const downloadReading = () => {
-        setShareMessage('Download feature coming soon!');
-        setTimeout(() => setShareMessage(''), 3000);
-    };
-
-    // Return to home page
-    const goToHome = () => {
-        router.push('/');
-    };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-                <Navbar />
-                <div className="flex flex-col items-center justify-center min-h-[80vh]">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mb-4"></div>
-                    <p className="text-lg text-purple-200">Interpreting your mystical reading...</p>
-                    <p className="text-sm text-gray-400 mt-2">The cards are revealing their secrets</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (error || readingCards.length === 0) {
-        return (
-            <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-                <Navbar />
-                <div className="flex flex-col items-center justify-center min-h-[80vh] p-4">
-                    <div className="w-20 h-20 rounded-full bg-red-800 flex items-center justify-center mb-6">
-                        <span className="text-3xl">!</span>
+    // Loading State Component
+    const LoadingState = () => (
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 to-gray-900 text-white">
+            <Navbar />
+            <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+                <div className="animate-pulse">
+                    <div className="w-24 h-24 bg-purple-600/50 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <svg className="w-12 h-12 text-purple-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
                     </div>
-                    <h1 className="text-3xl font-bold mb-4 text-red-400">Reading Error</h1>
-                    <p className="mb-6 text-center max-w-md">{error || "This reading appears to be invalid or has been corrupted by mystic forces."}</p>
-                    <button
-                        className="px-5 py-3 bg-purple-700 hover:bg-purple-600 rounded-lg transition flex items-center gap-2 shadow-lg"
-                        onClick={goToHome}
-                    >
-                        <Home size={18} />
-                        Return to the Sanctuary
-                    </button>
                 </div>
-                <Footer />
+                <h2 className="text-2xl font-bold text-purple-200 mb-4">
+                    Unveiling Your Mystical Reading
+                </h2>
+                <p className="text-gray-300 max-w-md">
+                    The cosmic energies are aligning to reveal your personalized tarot insights...
+                </p>
             </div>
-        );
-    }
+        </div>
+    );
 
-    return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    // Error State Component
+    const ErrorState = () => (
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 to-gray-900 text-white">
+            <Navbar />
+            <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+                <div className="w-24 h-24 bg-red-600/30 rounded-full flex items-center justify-center mb-6">
+                    <Info className="w-12 h-12 text-red-400" />
+                </div>
+                <h1 className="text-3xl font-extrabold text-red-300 mb-4">
+                    Reading Disrupted
+                </h1>
+                <p className="text-gray-200 max-w-md mb-8">
+                    {error || "The mystical connection has been interrupted. Please return to the sanctuary and try again."}
+                </p>
+                <button
+                    onClick={() => router.push('/')}
+                    className="px-6 py-3 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-2 shadow-lg"
+                >
+                    <Home className="w-5 h-5" />
+                    Return to Sanctuary
+                </button>
+            </div>
+            <Footer />
+        </div>
+    );
+
+    // Main Reading Content Component
+    const ReadingContent = () => (
+        <div className="min-h-screen bg-gradient-to-br text-white">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-8">
-                {/* Share feedback message */}
-                {shareMessage && (
-                    <div className="fixed top-20 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in-out">
-                        {shareMessage}
-                    </div>
-                )}
-
+            <div className="container mx-auto px-4 py-8 max-w-6xl">
                 {/* Header */}
-                <div className="mb-8">
+                <header className="mb-12">
                     <button 
-                        onClick={goToHome}
-                        className="text-purple-300 hover:text-purple-100 flex items-center gap-2 mb-4 transition-colors"
+                        onClick={() => router.push('/reading')}
+                        className="text-purple-300 hover:text-purple-100 flex items-center gap-2 mb-6 transition-colors"
                     >
-                        <ArrowLeft size={18} />
-                        <span>Back to Card Selection</span>
+                        <ArrowLeft className="w-5 h-5" />
+                        Back to Card Selection
                     </button>
                     
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <h1 className="text-3xl md:text-4xl font-serif font-bold text-purple-200">
-                            Your Mystical Reading
-                        </h1>
-
-                        <div className="flex gap-2">
-                            <button
-                                className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg transition flex items-center gap-2 shadow-md"
-                                onClick={shareReading}
-                            >
-                                <Share2 size={16} />
-                                <span className="hidden sm:inline">Share Reading</span>
-                            </button>
-
-                            <button
-                                className="px-4 py-2 bg-green-700 hover:bg-green-600 rounded-lg transition flex items-center gap-2 shadow-md"
-                                onClick={downloadReading}
-                            >
-                                <Download size={16} />
-                                <span className="hidden sm:inline">Download</span>
-                            </button>
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <h1 className="text-4xl font-extrabold text-purple-200 mb-2 chokokutai-regular">
+                                Your Mystical Journey
+                            </h1>
+                            <p className="text-gray-300 text-lg">
+                                A personalized tarot insight awaits
+                            </p>
                         </div>
+
+                        <button
+                            onClick={shareReading}
+                            className="px-5 py-2.5 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors flex items-center gap-2 shadow-md"
+                        >
+                            <Share2 className="w-5 h-5" />
+                            Share Reading
+                        </button>
                     </div>
                     
-                    <div className="h-1 w-32 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full mt-4"></div>
-                </div>
-
-                {/* Reading Info */}
-                <div className="w-full max-w-4xl mx-auto bg-gray-800 bg-opacity-70 p-5 rounded-lg mb-8 border border-gray-700 shadow-lg">
-                    <h2 className="text-xl font-semibold text-purple-300 mb-2">Your Personal Reading</h2>
-                    <p className="text-gray-300">This reading provides insights about your current situation and potential future developments.</p>
-                    <p className="text-gray-400 mt-2 text-sm">Reading ID: <span className="font-mono">{readingCode}</span></p>
-                </div>
+                    {shareMessage && (
+                        <div className="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50">
+                            {shareMessage}
+                        </div>
+                    )}
+                </header>
 
                 {/* Cards Reading */}
-                <div className="w-full max-w-4xl mx-auto space-y-6">
+                <div className="space-y-8">
                     {readingCards.map((card, idx) => (
                         <div 
                             key={idx} 
-                            className={`border border-gray-700 rounded-lg overflow-hidden transition-all duration-300 shadow-lg
-                                      ${expandedCards[idx] ? 'bg-gray-800 bg-opacity-90' : 'bg-gray-800 bg-opacity-70 hover:bg-opacity-80'}`}
+                            className="bg-[#484848] rounded-xl overflow-hidden shadow-xl border border-purple-800/50 hover:bg-[#484848]/80 transition-all"
                         >
-                            {/* Card header - Always visible */}
-                            <div 
-                                className="p-4 flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleCardExpanded(idx)}
-                            >
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center
-                                                   bg-gradient-to-br from-purple-700 to-indigo-900 text-white font-bold text-lg`}>
-                                        {idx + 1}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-semibold text-white">
-                                            {card.position}
-                                        </h3>
-                                        <p className="text-purple-300 font-medium">
-                                            {card.name} {card.isReversed ? '(Reversed)' : ''}
-                                        </p>
-                                    </div>
+                            <div className="md:flex p-6 gap-8 items-center">
+                                <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                                    <img 
+                                        src={card.image} 
+                                        alt={card.name}
+                                        className="w-[15rem] h-96 object-contain rounded-xl shadow-2xl"
+                                    />
                                 </div>
-                                <div>
-                                    {expandedCards[idx] ? (
-                                        <ChevronUp className="text-purple-300" size={20} />
-                                    ) : (
-                                        <ChevronDown className="text-purple-300" size={20} />
-                                    )}
+                                <div className="md:w-2/3">
+                                    <h3 className="text-xl font-bold text-purple-300 mb-2 ">
+                                        Card {idx + 1}: {card.position}
+                                    </h3>
+                                    <h4 className="text-2xl font-extrabold text-white mb-4">
+                                        {card.name}
+                                    </h4>
+                                    <p className={`text-lg leading-relaxed ${card.isReversed ? 'text-purple-200 italic' : 'text-gray-200'}`}>
+                                        {card.isReversed ? card.reversedMeaning : card.meaning}
+                                    </p>
                                 </div>
                             </div>
-                            
-                            {/* Card expanded content */}
-                            {expandedCards[idx] && (
-                                <div className="px-4 pb-5 border-t border-gray-700 pt-4">
-                                    <div className="flex flex-col md:flex-row gap-6">
-                                        {/* Card Image */}
-                                        <div className="md:w-1/3 flex justify-center">
-                                            <div className="w-48 h-72 border-2 border-purple-500 rounded-lg overflow-hidden shadow-md relative">
-                                                <div 
-                                                    className="w-full h-full flex flex-col items-center justify-center"
-                                                    style={{
-                                                        transform: card.isReversed ? 'rotate(180deg)' : 'rotate(0deg)'
-                                                    }}
-                                                >
-                                                    {/* Card image */}
-                                                    <div className="flex-grow w-full overflow-hidden">
-                                                        <img 
-                                                            src={card.image} 
-                                                            alt={card.name}
-                                                            className="w-full h-full object-cover" 
-                                                            onError={(e) => {
-                                                                // If image fails to load, show a gradient background
-                                                                e.target.onerror = null;
-                                                                e.target.style.display = 'none';
-                                                                e.target.parentNode.classList.add('bg-gradient-to-br', 'from-indigo-800', 'to-purple-900');
-                                                                // Add a fallback symbol
-                                                                const div = document.createElement('div');
-                                                                div.className = 'w-full h-full flex items-center justify-center';
-                                                                div.innerHTML = `
-                                                                    <div class="text-center p-2">
-                                                                        <div class="w-12 h-12 border-2 border-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                                                                            <div class="w-8 h-8 border-2 border-yellow-500 rounded-full flex items-center justify-center">
-                                                                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                `;
-                                                                e.target.parentNode.appendChild(div);
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    
-                                                    {/* Card title */}
-                                                    <div className="w-full bg-gradient-to-r from-purple-900 to-indigo-900 p-2 text-center border-t border-purple-400">
-                                                        <span className="text-white text-base font-serif font-bold">{card.name}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Card Interpretation */}
-                                        <div className="md:w-2/3">
-                                            <h4 className="text-xl font-semibold text-purple-200 mb-3">
-                                                {card.isReversed ? 'Reversed Meaning' : 'Upright Meaning'}
-                                            </h4>
-                                            <p className="text-gray-200 mb-4 leading-relaxed">
-                                                {card.isReversed ? card.reversedMeaning : card.meaning}
-                                            </p>
-                                            
-                                            <h4 className="text-lg font-medium text-purple-200 mb-2">
-                                                Position Significance
-                                            </h4>
-                                            <p className="text-gray-300 leading-relaxed">
-                                                This card represents <span className="text-purple-300 font-medium">{card.position.toLowerCase()}</span>. 
-                                                {idx === 0 && " It shows your current emotional state and self-perception."}
-                                                {idx === 1 && " It reveals your deepest desires and what you're consciously or unconsciously seeking."}
-                                                {idx === 2 && " It highlights anxieties or concerns that may be influencing your decisions."}
-                                                {idx === 3 && " It indicates positive factors or strengths that are supporting your journey."}
-                                                {idx === 4 && " It points to challenges or obstacles that you're facing or will soon encounter."}
-                                                {idx === 5 && " It suggests the likely outcome based on the current energies and choices."}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
                         </div>
                     ))}
-                </div>
-
-                {/* Reading Summary */}
-                <div className="w-full max-w-4xl mx-auto mt-8 bg-gray-800 bg-opacity-70 p-6 rounded-lg border border-gray-700 shadow-lg">
-                    <h2 className="text-xl font-bold text-purple-300 mb-3">Reading Summary</h2>
-                    <p className="text-gray-200 mb-4">
-                        This 6-card spread provides a snapshot of your current situation, influences, and possible outcomes.
-                        Reflect on how these cards interact with each other to gain deeper insights.
-                    </p>
-                    
-                    <div className="flex flex-wrap gap-4 mt-4 justify-center">
-                        <button
-                            className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg transition flex items-center gap-2 shadow-md"
-                            onClick={shareReading}
-                        >
-                            <Share2 size={16} />
-                            Share Reading
-                        </button>
-                        
-                        <button
-                            className="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-lg transition flex items-center gap-2 shadow-md"
-                            onClick={goToHome}
-                        >
-                            <Home size={16} />
-                            New Reading
-                        </button>
-                    </div>
-                </div>
-                
-                <div className="text-center text-gray-400 mt-12 mb-6">
-                    <p className="text-sm">✨ The universe speaks through the cards ✨</p>
                 </div>
             </div>
 
             <Footer />
         </div>
     );
+
+    // Render appropriate state based on loading and error conditions
+    if (loading) return <LoadingState />;
+    if (error || readingCards.length === 0) return <ErrorState />;
+    return <ReadingContent />;
 }
