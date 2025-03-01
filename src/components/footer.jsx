@@ -24,7 +24,7 @@ function Footer() {
                     {/* Social Media */}
                     <div className="flex justify-center md:justify-end">
                         <a 
-                            href="https://www.instagram.com/universehiddentarot?igsh=bHhsNWljbDU4NGpt&utm_source=website" 
+                            href="https://www.instagram.com/" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="text-gray-300 hover:text-white transition-colors"

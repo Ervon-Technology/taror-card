@@ -12,18 +12,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Mystic Tarot Insights - Unlock Your Future",
+  title: "Mystic Tarot Insights - Unlock Your Future, with free tarot-insights",
   description: "Get deep free tarot readings and mystical insights for love, career, and personal growth.",
-  keywords: ["tarot", "tarot reading", "mystic insights", "future predictions", "spiritual guidance"],
+  keywords: ["tarot", "tarot reading", "mystic insights", "future predictions", "spiritual guidance", "free tarot readings"],
   viewport: "width=device-width, initial-scale=1",
   openGraph: {
     title: "Mystic Tarot Insights",
     description: "Unlock the mysteries of your future with deep tarot insights.",
-    url: "https://yourwebsite.com", // Replace with your website URL
+    url: "https://www.freetarotread.com", // Replace with your website URL
     type: "website",
     images: [
       {
-        url: "/og-image.jpg", // Replace with your Open Graph image URL
+        url: "/logo.svg", // Replace with your Open Graph image URL
         width: 1200,
         height: 630,
         alt: "Mystic Tarot Insights Open Graph Image",
@@ -38,7 +38,7 @@ export const metadata = {
     images: ["/twitter-image.jpg"], // Replace with your Twitter image URL
   },
   alternates: {
-    canonical: "https://yourwebsite.com", // Replace with your canonical URL
+    canonical: "https://www.freetarotread.com", // Replace with your canonical URL
   },
   // Optionally add robots meta tag
   robots: {
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         {/* Metadata is already handled by Next.js, but we can add additional tags if needed */}
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.svg" />
       </head>
       <body
         style={{ background: "linear-gradient(rgba(4, 4, 4, 0.96), rgba(38, 35, 35, 0.5)), url('/bg2.jpg')" }}

@@ -283,7 +283,7 @@ const TarotCardSpread = () => {
         if (!spread) {
             return (
                 <div
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/80 bg-opacity-70 text-black px-6 py-4 rounded-lg  max-w-xs z-50 text-lg"
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white  text-black px-6 py-4 rounded-lg  max-w-xs z-50 text-lg"
                     onClick={(e) => {
                         // Don't propagate click if we're handling it here
                         e.stopPropagation();

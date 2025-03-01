@@ -16,7 +16,7 @@ export default function Navbar() {
                 <div className="flex items-center space-x-4">
                     {/* Instagram Link */}
                     <a 
-                        href="https://www.instagram.com/universehiddentarot?igsh=bHhsNWljbDU4NGpt&utm_source=website" 
+                        href="https://www.instagram.com/" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-white hover:text-purple-300 transition-colors"

@@ -269,6 +269,14 @@ export default function ReadingPage() {
                         </div>
                     ))}
                 </div>
+                <div className="flex justify-center mt-8">
+                    <button
+                        onClick={() => router.push('/reading')}
+                        className="px-6 py-3 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors shadow-md text-white text-lg font-bold"
+                    >
+                        Ask Another Question
+                    </button>
+                </div>
             </div>
 
             <Footer />
