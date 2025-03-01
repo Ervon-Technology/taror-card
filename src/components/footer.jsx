@@ -14,6 +14,12 @@ function Footer() {
                         <p className="text-sm text-gray-400">© {new Date().getFullYear()} All Rights Reserved.</p>
                     </div>
 
+                    <p className="mt-2 text-xs">
+                        <Link href="/disclamer" className="text-gray-300 hover:text-white underline">
+                         Disclaimer
+                        </Link>
+                    </p>
+
                     {/* Social Media */}
                     <div className="flex items-center space-x-4">
                         <a 
@@ -25,17 +31,6 @@ function Footer() {
                             <Instagram size={24} />
                         </a>
                     </div>
-                </div>
-
-                {/* Disclaimer */}
-                <div className="border-t border-gray-700 pt-4 mt-4 text-center">
-                    <p className="text-xs text-gray-400 max-w-2xl mx-auto">
-                        Disclaimer: Tarot readings are for entertainment purposes only. 
-                        They are not a substitute for professional advice, 
-                        medical diagnosis, or legal counsel. 
-                        The insights provided are interpretative and should be 
-                        approached with personal discretion and critical thinking.
-                    </p>
                 </div>
             </div>
         </footer>

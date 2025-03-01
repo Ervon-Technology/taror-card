@@ -16,7 +16,7 @@ export default function Navbar() {
                 <div className="flex items-center space-x-4">
                     {/* Instagram Link */}
                     <a 
-                        href="https://www.instagram.com" 
+                        href="https://www.instagram.com/universehiddentarot?igsh=bHhsNWljbDU4NGpt&utm_source=website" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-white hover:text-purple-300 transition-colors"
@@ -26,7 +26,7 @@ export default function Navbar() {
 
                     {/* Gmail Link */}
                     <a 
-                        href="mailto:your-email@gmail.com" 
+                        href="mailto:Spearheadinnovations@gmail.com" 
                         className="text-white hover:text-purple-300 transition-colors"
                     >
                         <Mail size={24} />

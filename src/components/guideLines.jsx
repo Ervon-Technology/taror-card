@@ -66,7 +66,7 @@ function GuideLines() {
     <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 p-6 lg:p-12 bg-gradient-to-b">
       {/* Left Section - Provided Content */}
       <div className="w-full lg:w-1/2 bg-white/90 rounded-xl shadow-lg p-8 border border-gray-200">
-        <h2 className="text-2xl font-bold text-gray-900 font-serif">0X17 World Famous Universal 6 Card Spread</h2>
+        <h2 className="text-2xl font-bold text-gray-900 font-serif">Universe Hidden Tarot</h2>
         <div className="h-1 w-32 bg-gradient-to-r from-gray-500 to-gray-500 rounded-full mt-2"></div>
         
         <p className="text-lg text-gray-800 mt-6 font-medium">
@@ -153,6 +153,10 @@ function GuideLines() {
             ></div>
           </div>
         </div>
+
+              {/* Give guide line to get best result */}
+
+      
       </div>
     </div>
   );
