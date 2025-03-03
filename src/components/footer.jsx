@@ -16,13 +16,13 @@ function Footer() {
 
                     {/* Disclaimer Link */}
                     <div>
-                        <Link href="/disclamer" className="text-gray-300 hover:text-white underline">
+                        <Link href="/disclamer" target="_blank" className="text-gray-300 hover:text-white underline">
                             Disclaimer
                         </Link>
                     </div>
 
                     {/* Social Media */}
-                    <div className="flex justify-center md:justify-end">
+                    {/* <div className="flex justify-center md:justify-end">
                         <a 
                             href="https://www.instagram.com/" 
                             target="_blank" 
@@ -31,7 +31,7 @@ function Footer() {
                         >
                             <Instagram size={24} />
                         </a>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </footer>

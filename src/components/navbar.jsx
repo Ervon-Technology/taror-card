@@ -15,14 +15,14 @@ export default function Navbar() {
                 {/* Social Media Icons */}
                 <div className="flex items-center space-x-4">
                     {/* Instagram Link */}
-                    <a 
+                    {/* <a 
                         href="https://www.instagram.com/" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-white hover:text-purple-300 transition-colors"
                     >
                         <Instagram size={24} />
-                    </a>
+                    </a> */}
 
                     {/* Gmail Link */}
                     <a 

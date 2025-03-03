@@ -96,7 +96,7 @@ function GuideLines() {
 
         <p className="text-gray-700 mt-6 italic border-l-4 border-gray-300 pl-4">
           Don't be fooled by the brevity and simplicity of the responses or by the fact it is a Major Arcana-only reading.
-          This reading has stood the test of time and proven itself again and again to millions of users.
+          This reading has stood the test of time and proven itself for a lot of people countless times.
         </p>
       </div>
 
