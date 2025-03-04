@@ -68,6 +68,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7050758548344066"
+     crossorigin="anonymous"></script>
       </body>
     </html>
   );
