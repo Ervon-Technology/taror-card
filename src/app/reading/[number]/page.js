@@ -4,9 +4,10 @@ import { useParams } from 'next/navigation';
 import { tarotCards } from '@/app/tarotCards';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Share2, Home, Info, ArrowLeft } from 'lucide-react';
+import { Share2, Home, Info, ArrowLeft, Mail, Star, Sparkles } from 'lucide-react';
 import Footer from '@/components/footer';
 import Navbar from '@/components/navbar';
+import FormPopup from '@/components/FormPopup'; // Import the new FormPopup component
 
 export default function ReadingPage() {
     
@@ -18,6 +19,7 @@ export default function ReadingPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [shareMessage, setShareMessage] = useState('');
+    const [showForm, setShowForm] = useState(false); // New state for controlling form visibility
 
     // Card positions and meanings
     const cardPositions = [
@@ -110,6 +112,22 @@ export default function ReadingPage() {
         };
     }, [readingCode]);
 
+    // Handle Ask Another Question button click
+    const handleAskAnotherQuestion = () => {
+        setShowForm(true); // Show the form popup instead of directly navigating
+    };
+
+    // Handle form close
+    const handleFormClose = () => {
+        setShowForm(false);
+        router.push('/reading'); // Redirect to reading page on cancel
+    };
+
+    // Handle Get Personalized Reading button click
+    const handleGetPersonalizedReading = () => {
+        setShowForm(true); // Open the form popup
+    };
+
     // Share the reading via navigator share API or copy link
     const shareReading = () => {
         const url = window.location.href;
@@ -197,6 +215,65 @@ export default function ReadingPage() {
         </div>
     );
 
+    // Personalized Reading Card Component
+    const PersonalizedReadingCard = () => (
+        <div className="max-w-4xl mx-auto mt-16 mb-16">
+            <div className="bg-gradient-to-r from-purple-900/60 to-indigo-900/60 rounded-2xl overflow-hidden shadow-2xl border border-purple-500/30 relative">
+                {/* Decorative elements */}
+                <div className="absolute top-0 left-0 w-full h-20 overflow-hidden">
+                    <div className="absolute -top-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl"></div>
+                </div>
+                <div className="absolute top-0 right-0 w-full h-20 overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl"></div>
+                </div>
+                
+                {/* Card content */}
+                <div className="p-6 sm:p-8 relative z-10">
+                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                        {/* Left side with icon */}
+                        <div className="w-full md:w-1/4 flex justify-center">
+                            <div className="relative">
+                                <div className="w-28 h-28 sm:w-32 sm:h-32 bg-purple-600/20 rounded-full flex items-center justify-center">
+                                    <Mail className="w-12 h-12 sm:w-14 sm:h-14 text-purple-300" />
+                                </div>
+                                <Star className="w-6 h-6 text-yellow-400 absolute top-0 right-0 animate-pulse" style={{animationDuration: '3s'}} />
+                                <Star className="w-4 h-4 text-purple-300 absolute bottom-4 right-2 animate-pulse" style={{animationDuration: '2.5s'}} />
+                                <Star className="w-3 h-3 text-indigo-400 absolute top-4 left-2 animate-pulse" style={{animationDuration: '4s'}} />
+                            </div>
+                        </div>
+                        
+                        {/* Right side with text and button */}
+                        <div className="w-full md:w-3/4 text-center md:text-left">
+                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 sm:mb-3">
+                                Unlock Deeper Mystical Insights
+                            </h3>
+                            <p className="text-gray-300 text-sm sm:text-base mb-4 sm:mb-6">
+                                Receive a personalized in-depth tarot reading directly to your email, 
+                                where cosmic wisdom will guide you through your life's challenges and opportunities.
+                            </p>
+                            <button
+                                onClick={handleGetPersonalizedReading}
+                                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full 
+                                        transition-all shadow-lg shadow-purple-900/30 hover:shadow-purple-600/30 
+                                        text-white font-bold flex items-center gap-2 mx-auto md:mx-0"
+                            >
+                                <Sparkles className="w-5 h-5" />
+                                <span>Get Your Personalized Reading</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Decorative sparkling dots */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <span className="absolute top-1/4 right-1/4 w-1 h-1 bg-purple-300 rounded-full animate-ping" style={{animationDuration: '3s', animationDelay: '0.2s'}}></span>
+                    <span className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-indigo-300 rounded-full animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}></span>
+                    <span className="absolute top-1/2 left-1/5 w-1 h-1 bg-purple-300 rounded-full animate-ping" style={{animationDuration: '4s', animationDelay: '1s'}}></span>
+                </div>
+            </div>
+        </div>
+    );
+
     // Main Reading Content Component
     const ReadingContent = () => (
         <div className="min-h-screen text-white">
@@ -269,17 +346,32 @@ export default function ReadingPage() {
                         </div>
                     ))}
                 </div>
+
+                {/* Add the personalized reading card */}
+                <PersonalizedReadingCard />
+
                 <div className="flex justify-center mt-8">
                     <button
                         onClick={() => router.push('/reading')}
                         className="px-6 py-3 bg-purple-700 hover:bg-purple-600 rounded-full transition-colors shadow-md text-white text-lg font-bold"
                     >
-                        Ask Another Question
+                        {/* Decorative sparkles */}
+                        <span className="absolute inset-0 w-full h-full">
+                            <span className="absolute top-0 left-1/4 w-1 h-1 bg-purple-300 rounded-full opacity-70 animate-ping" style={{animationDuration: '3s', animationDelay: '0.2s'}}></span>
+                            <span className="absolute bottom-0 right-1/4 w-1 h-1 bg-purple-300 rounded-full opacity-70 animate-ping" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}></span>
+                        </span>
+                        {/* Button text with subtle glow effect */}
+                        <span className="relative z-10 flex items-center gap-2">
+                            <span className="text-shadow-sm shadow-purple-400/50">Ask Another Question</span>
+                        </span>
                     </button>
                 </div>
             </div>
 
             <Footer />
+            
+            {/* Render form popup conditionally */}
+            {showForm && <FormPopup onClose={handleFormClose} />}
         </div>
     );
 
